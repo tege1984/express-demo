@@ -1,11 +1,15 @@
+const morgan = require("morgan");
 const Joi = require("joi");
 const logger = require("./logger");
 const authenticate = require("./authenticate");
+const helmet = require("helmet");
 const express = require("express");
 const app = express();
 
 app.use(express.json());
 app.use(logger);
+app.use(helmet());
+app.use(morgan("tiny"));
 
 app.use(authenticate);
 
