@@ -1,3 +1,5 @@
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
 const config = require("config");
 const morgan = require("morgan");
 const Joi = require("joi");
@@ -26,11 +28,14 @@ console.log("Application Name:" + config.get("name"));
 console.log("Application Name:" + config.get("mail.host"));
 console.log("Mail password:" + config.get("mail.password"));
 
-// set the enviroment that the program is running
+// get the enviroment that the program is running
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("Morgan enabled...");
+  //console.log("Morgan enabled...");
+  startupDebugger("Morgan enabled...");
 }
+
+dbDebugger("connected to db...");
 
 const courses = [
   { id: 1, name: "course1" },
