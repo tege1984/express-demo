@@ -1,3 +1,4 @@
+const config = require("config");
 const morgan = require("morgan");
 const Joi = require("joi");
 const logger = require("./logger");
@@ -6,14 +7,30 @@ const helmet = require("helmet");
 const express = require("express");
 const app = express();
 
+console.log(`NODE_ENV ${process.env.NODE_ENV}`);
+// console.log(`app: ${app.get("env")}`);
+// built-in middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("Public"));
-app.use(logger);
-app.use(helmet());
-app.use(morgan("tiny"));
 
+// custom middleware
 app.use(authenticate);
+app.use(logger);
+
+// third-party middleware
+app.use(helmet());
+
+//configuration
+console.log("Application Name:" + config.get("name"));
+console.log("Application Name:" + config.get("mail.host"));
+console.log("Mail password:" + config.get("mail.password"));
+
+// set the enviroment that the program is running
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  console.log("Morgan enabled...");
+}
 
 const courses = [
   { id: 1, name: "course1" },
