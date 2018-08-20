@@ -9,6 +9,9 @@ const helmet = require("helmet");
 const express = require("express");
 const app = express();
 
+app.set("view engine", "pug");
+app.set("views", "./views");
+
 console.log(`NODE_ENV ${process.env.NODE_ENV}`);
 // console.log(`app: ${app.get("env")}`);
 // built-in middleware
@@ -45,7 +48,8 @@ const courses = [
 ];
 
 app.get("/", (req, res) => {
-  res.send("Hello Guys!");
+  res.render("index", { title: "My express App", message: "Hello Express" });
+  // res.send("Hello Guys!");
 });
 
 app.get("/api/courses", (req, res) => {
